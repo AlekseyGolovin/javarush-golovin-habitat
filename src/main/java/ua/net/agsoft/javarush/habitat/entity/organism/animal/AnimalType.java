@@ -1,7 +1,7 @@
 package ua.net.agsoft.javarush.habitat.entity.organism.animal;
 
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.herbivore.*;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.predator.*;
+import ua.net.agsoft.javarush.habitat.entity.organism.animal.carnivore.*;
 
 public enum AnimalType {
     WOLF(Wolf.class),

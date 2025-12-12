@@ -2,6 +2,7 @@ package ua.net.agsoft.javarush.habitat.entity.island;
 
 import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.Animal;
+import ua.net.agsoft.javarush.habitat.entity.organism.animal.AnimalType;
 import ua.net.agsoft.javarush.habitat.entity.organism.plant.Plant;
 
 import java.util.HashMap;
@@ -49,28 +50,34 @@ public class Cell {
         throw new RuntimeException("Invalid change of " + Plant.class.getSimpleName() + " type quantity");
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public boolean incAnimal(Animal animal) {
-        Class<? extends Animal> animalClazz = animal.getClass();
+    private boolean canAddAnimal(Class<? extends Animal> animalClazz) {
         int maxCount = organismMaxCountMap.getOrDefault(animalClazz, 0);
         int curCount = animalCountMap.getOrDefault(animalClazz, 0);
         if (curCount < maxCount) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canAddAnimal(Animal animal) {
+        Class<? extends Animal> animalClazz = animal.getClass();
+        return canAddAnimal(animalClazz);
+    }
+
+    public boolean incAnimal(Animal animal) {
+        Class<? extends Animal> animalClazz = animal.getClass();
+        if (canAddAnimal(animalClazz)) {
+
+            int curCount = getAnimalCount(animalClazz);
             curCount++;
             animalCountMap.put(animalClazz, curCount);
             return true;
         }
         return false;
+    }
+
+    public int getAnimalCount(Class<? extends Animal> animalClazz){
+        return animalCountMap.getOrDefault(animalClazz, 0);
     }
 
     public void decAnimal(Animal animal) {
@@ -84,4 +91,25 @@ public class Cell {
         }
         throw new RuntimeException("Invalid change of " + animalClazz.getSimpleName() + " type quantity");
     }
+
+    @Override
+    public String toString() {
+
+        StringBuilder animals = new StringBuilder();
+        for (AnimalType animalType : AnimalType.values()) {
+            Class<? extends Animal> animalClazz = animalType.getAnimalClass();
+            int curCount = animalCountMap.getOrDefault(animalClazz, 0);
+            int maxCount = organismMaxCountMap.getOrDefault(animalClazz, 0);
+            String className = animalClazz.getSimpleName();
+            animals.append(className).append(" ").append(curCount).append("/").append(maxCount).append(" ");
+        }
+
+
+        return "Cell {" +
+                " plantCount=" + plantCount +
+                ", animals [ " + animals + "] " +
+                '}';
+    }
+
+
 }

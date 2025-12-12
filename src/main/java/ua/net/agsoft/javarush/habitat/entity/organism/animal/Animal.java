@@ -1,9 +1,13 @@
 package ua.net.agsoft.javarush.habitat.entity.organism.animal;
 
+import ua.net.agsoft.javarush.habitat.config.OrganismConfiguration;
+import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 // implements Eatable, Moveable, Reproducible
-public abstract class Animal extends Organism {
+public abstract class Animal extends Organism implements Moveable {
 
     protected int positionX;
     protected int positionY;
@@ -18,6 +22,8 @@ public abstract class Animal extends Organism {
             throw new RuntimeException(e);
         }
     }
+
+    protected abstract boolean canEatPlants();
 
     public int getPositionX() {
         return positionX;
@@ -51,4 +57,47 @@ public abstract class Animal extends Organism {
     public void setPositionY(int position) {
         positionY = position;
     }
+
+    @Override
+    public void move(Island island) {
+        // Кол-во шагов
+        ThreadLocalRandom tlr = ThreadLocalRandom.current();
+        //System.out.println(this);
+
+
+        Class<? extends Animal> clazz = this.getClass();
+        OrganismConfiguration organismConfiguration = island.getorganismConfiguration();
+        int maxSteps = organismConfiguration.getOrganismParameterMap().get(clazz).getMaxSteps();
+
+
+        //
+
+        for (int step = 0; step < maxSteps; step++) {
+            int direction = tlr.nextInt(4);
+            //System.out.println("X: "+positionX+" Y: "+positionY);
+            //System.out.println("step: "+step+" direction: "+direction);
+            int newPositionX = positionX;
+            int newPositionY = positionY;
+            switch (direction) {
+                case 0 -> newPositionX++;
+                case 1 -> newPositionY++;
+                case 2 -> newPositionX--;
+                case 3 -> newPositionY--;
+                default -> newPositionX++;
+            }
+
+            //System.out.println("X: "+newPositionX+" Y: "+newPositionY);
+
+            if (island.canMove(this, newPositionX, newPositionY)) {
+                island.getCell(positionX, positionY).decAnimal(this);
+                island.getCell(newPositionX, newPositionY).incAnimal(this);
+                positionX = newPositionX;
+                positionY = newPositionY;
+            } else {
+                //System.out.println("Can not move");
+            }
+        }
+    }
+
+
 }

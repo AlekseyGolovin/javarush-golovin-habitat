@@ -17,8 +17,24 @@ public class Main {
             Configurator configurator = new Configurator();
             //Island island = configurator.prepareWorld(configPath);
             Island island = configurator.prepareWorld();
+
+            System.out.println("----------------------------------------");
+            System.out.println(island);
+            System.out.println("Cell[0][0]: " + island.getCell(0, 0));
+            System.out.println("Cell[1][1]: " + island.getCell(1, 1));
+            System.out.println("----------------------------------------");
+
+
             IslandSimulation islandSimulation = new IslandSimulation();
             islandSimulation.simulate(island);
+
+
+
+            System.out.println("----------------------------------------");
+            System.out.println(island);
+            System.out.println("Cell[0][0]: " + island.getCell(0, 0));
+            System.out.println("Cell[1][1]: " + island.getCell(1, 1));
+            System.out.println("----------------------------------------");
 
         } catch (Exception e) {
             e.printStackTrace();

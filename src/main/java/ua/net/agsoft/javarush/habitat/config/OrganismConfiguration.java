@@ -3,8 +3,6 @@ package ua.net.agsoft.javarush.habitat.config;
 
 import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 import ua.net.agsoft.javarush.habitat.entity.organism.OrganismParameter;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.herbivore.*;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.predator.*;
 
 
 import java.util.HashMap;

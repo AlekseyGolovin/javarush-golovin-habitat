@@ -5,8 +5,6 @@ import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 import ua.net.agsoft.javarush.habitat.entity.organism.OrganismParameter;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.AnimalType;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.herbivore.*;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.predator.*;
 import ua.net.agsoft.javarush.habitat.entity.organism.plant.Plant;
 import ua.net.agsoft.javarush.habitat.util.Util;
 import ua.net.agsoft.javarush.habitat.util.UtilJSON;

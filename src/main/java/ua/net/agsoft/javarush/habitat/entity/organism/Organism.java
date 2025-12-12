@@ -6,9 +6,10 @@ public abstract class Organism{
 
     //private OrganismParameter organismParameter;
 
-    private double weight;
-    private double foodRequired;
-    private int maxSteps;
+
+
+    protected double weight;
+
     //private int maxCountPerCell;
 
 
@@ -19,6 +20,10 @@ public abstract class Organism{
 
 
         //this.organismParameter =
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
 

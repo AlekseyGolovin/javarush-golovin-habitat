@@ -4,37 +4,45 @@ import org.json.simple.JSONObject;
 
 public class UtilJSON {
     public static int getIntFromObject(JSONObject jo, String name, int defVal) {
-        int result = defVal;
-        if (jo != null && jo.get(name) != null) {
-            try {
-                String strVal = jo.get(name).toString();
-                if (strVal.equalsIgnoreCase("null")) {
-                    strVal = "";
-                }
-                if (!strVal.isEmpty()) {
-                    result = Integer.parseInt(strVal);
-                }
-            } catch (Exception ex) {
+        try {
+            if (jo == null) {
+                return defVal;
             }
+            if (jo.get(name) == null) {
+                return defVal;
+            }
+            String value = jo.get(name).toString();
+            if (value.equalsIgnoreCase("null")) {
+                return defVal;
+            }
+            if (value.isEmpty()) {
+                return defVal;
+            }
+            return Integer.parseInt(value);
+        } catch (Exception ignore) {
         }
-        return result;
+        return defVal;
     }
 
     public static double getDoubleFromObject(JSONObject jo, String name, double defVal) {
-        double result = defVal;
-        if (jo != null && jo.get(name) != null) {
-            try {
-                String strVal = jo.get(name).toString();
-                if (strVal.equalsIgnoreCase("null")) strVal = "";
-                if (strVal.length() > 0 ) {
-
-                    //String strNumVal = UtilString.numDotOnly(strVal);
-
-                    result = Double.parseDouble(strVal);
-                }
-            } catch (Exception ex) { }
+        try {
+            if (jo == null) {
+                return defVal;
+            }
+            if (jo.get(name) == null) {
+                return defVal;
+            }
+            String value = jo.get(name).toString();
+            if (value.equalsIgnoreCase("null")) {
+                return defVal;
+            }
+            if (value.isEmpty()) {
+                return defVal;
+            }
+            return Double.parseDouble(value);
+        } catch (Exception ignore) {
         }
-        return result;
+        return defVal;
     }
 
 }

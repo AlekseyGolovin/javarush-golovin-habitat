@@ -4,7 +4,7 @@ import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 import ua.net.agsoft.javarush.habitat.entity.organism.OrganismParameter;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.herbivore.*;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.predator.*;
+import ua.net.agsoft.javarush.habitat.entity.organism.animal.carnivore.*;
 import ua.net.agsoft.javarush.habitat.entity.organism.plant.Plant;
 
 import java.util.HashMap;
