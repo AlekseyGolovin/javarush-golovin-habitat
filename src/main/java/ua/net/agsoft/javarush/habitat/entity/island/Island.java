@@ -190,4 +190,13 @@ public class Island {
         Collections.shuffle(animals);
         return animals;
     }
+
+    public void growPlants() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell cell = getCell(x, y);
+                cell.growPlants();
+            }
+        }
+    }
 }

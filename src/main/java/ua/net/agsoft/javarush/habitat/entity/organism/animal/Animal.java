@@ -9,11 +9,17 @@ import java.util.concurrent.ThreadLocalRandom;
 // implements Eatable, Moveable, Reproducible
 public abstract class Animal extends Organism implements Moveable {
 
+    protected boolean alive = true;
+
     protected int positionX;
     protected int positionY;
 
     protected double maxSaturation;
     protected double saturation;
+
+
+
+    protected int action;
 
     public static Animal createInstance(Class<? extends Animal> clazz) {
         try {
@@ -24,6 +30,30 @@ public abstract class Animal extends Organism implements Moveable {
     }
 
     protected abstract boolean canEatPlants();
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void die() {
+        alive = false;
+    }
+
+    public void depletion(){
+        double starvation = maxSaturation / 100.0;
+        saturation -= starvation;
+        if (saturation < 0.0) die();
+    }
+
+    public boolean decAction() {
+        if (action <= 0) return false;
+        action--;
+        return true;
+    }
+
+    public void incAction() {
+        action++;
+    }
 
     public int getPositionX() {
         return positionX;

@@ -7,8 +7,12 @@ import ua.net.agsoft.javarush.habitat.entity.organism.plant.Plant;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Cell {
+
+    private static int CHANCE_FOR_PLANTS_GROW = 10;
+    private static int PLANTS_FERTILITY = 10;
 
     private static Map<Class<? extends Organism>, Integer> organismMaxCountMap;
 
@@ -40,6 +44,14 @@ public class Cell {
             return true;
         }
         return false;
+    }
+
+    public void addPlants(int count) {
+        int maxCount = organismMaxCountMap.getOrDefault(Plant.class, 0);
+        plantCount += count;
+        if (plantCount > maxCount) {
+            plantCount = maxCount;
+        }
     }
 
     public void decPlant() {
@@ -76,7 +88,7 @@ public class Cell {
         return false;
     }
 
-    public int getAnimalCount(Class<? extends Animal> animalClazz){
+    public int getAnimalCount(Class<? extends Animal> animalClazz) {
         return animalCountMap.getOrDefault(animalClazz, 0);
     }
 
@@ -112,4 +124,14 @@ public class Cell {
     }
 
 
+    public void growPlants() {
+        // C вероятностью 10% вырастит новая трава
+        // +10% от текушего количества
+        ThreadLocalRandom tlr = ThreadLocalRandom.current();
+        int chance = tlr.nextInt(100);
+        if (chance <= CHANCE_FOR_PLANTS_GROW) {
+            incPlant();
+        }
+        addPlants(plantCount * PLANTS_FERTILITY / 100);
+    }
 }
