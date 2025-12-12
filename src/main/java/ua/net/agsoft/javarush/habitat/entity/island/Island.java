@@ -8,7 +8,6 @@ import ua.net.agsoft.javarush.habitat.entity.organism.plant.Plant;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class Island {
 
@@ -50,8 +49,8 @@ public class Island {
         String animalsStatistic = "";
         for (AnimalType animalType : AnimalType.values()) {
             Class<? extends Animal> animalClazz = animalType.getAnimalClass();
-            int islandCount = getCountFromList(animalClazz);
-            int cellsCount = getCountFromCells(animalClazz);
+            int islandCount = getAnimalCountFromList(animalClazz);
+            int cellsCount = getAnimalCountFromCells(animalClazz);
             String className = animalClazz.getSimpleName();
             String animalStatistic = className + ": [" + islandCount + "][" + cellsCount + "]\n";
             animalsStatistic += animalStatistic;
@@ -65,7 +64,7 @@ public class Island {
         return answer;
     }
 
-    private int getCountFromCells(Class<? extends Animal> animalClazz) {
+    private int getAnimalCountFromCells(Class<? extends Animal> animalClazz) {
         int sum = 0;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -77,7 +76,27 @@ public class Island {
         return sum;
     }
 
-    private int getCountFromList(Class<? extends Animal> animalClazz) {
+    public int getAnimalCount() {
+        return animals.size();
+    }
+
+    public int getAnimalCount(Class<? extends Animal> animalClazz) {
+        return getAnimalCountFromList(animalClazz);
+    }
+
+    public int getPlantCount() {
+        int sum = 0;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell cell = getCell(x, y);
+                int count = cell.getPlantCount();
+                sum += count;
+            }
+        }
+        return sum;
+    }
+
+    private int getAnimalCountFromList(Class<? extends Animal> animalClazz) {
 
         // Отфильтровать список по типу,
         List<Animal> animalList = animals.stream().filter(a -> a.getClass() == animalClazz).toList();

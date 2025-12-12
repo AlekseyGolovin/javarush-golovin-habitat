@@ -92,6 +92,10 @@ public class Cell {
         return animalCountMap.getOrDefault(animalClazz, 0);
     }
 
+    public int getPlantCount() {
+        return plantCount;
+    }
+
     public void decAnimal(Animal animal) {
         Class<? extends Animal> animalClazz = animal.getClass();
         //int maxCount = organismMaxCountMap.getOrDefault(animalClazz, 0);

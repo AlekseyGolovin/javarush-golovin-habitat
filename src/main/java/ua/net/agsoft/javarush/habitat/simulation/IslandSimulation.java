@@ -1,8 +1,10 @@
 package ua.net.agsoft.javarush.habitat.simulation;
 
+import ua.net.agsoft.javarush.habitat.entity.island.Cell;
 import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.Animal;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.Moveable;
+import ua.net.agsoft.javarush.habitat.statistic.Statistic;
 
 import java.util.ArrayList;
 
@@ -18,7 +20,7 @@ public class IslandSimulation {
             if (beat % 1 == 0) incAction(island);
 
             // TODO: Сбор статистики. отдельным потоком.
-            if (beat % 100 == 0) showStatistic(island);
+            if (beat % 100 == 0) showStatistic(island, beat);
 
             // TODO: Симуляция действий. Отдельным потоком
             if (beat % 1 == 0) makeChoice(island);
@@ -28,14 +30,17 @@ public class IslandSimulation {
 
             beat++;
         } while(beat < 1000);
+        showStatistic(island, beat);
     }
 
     private void depletion(Island island) {
         ArrayList<Animal> animals = island.getAnimals();
         for (Animal animal : animals) {
             if (!animal.isAlive()) continue;
-            animal.depletion();
+            Cell cell = island.getCell(animal.getPositionX(), animal.getPositionY());
+            animal.depletion(cell);
         }
+        animals.removeIf(animal -> !animal.isAlive());
     }
 
     private void incAction(Island island) {
@@ -46,8 +51,8 @@ public class IslandSimulation {
         }
     }
 
-    private void showStatistic(Island island) {
-
+    private void showStatistic(Island island, int beat) {
+        Statistic.showInConsole(island, beat);
     }
 
     private void makeChoice(Island island) {

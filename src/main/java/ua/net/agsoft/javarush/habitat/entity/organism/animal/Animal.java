@@ -1,6 +1,7 @@
 package ua.net.agsoft.javarush.habitat.entity.organism.animal;
 
 import ua.net.agsoft.javarush.habitat.config.OrganismConfiguration;
+import ua.net.agsoft.javarush.habitat.entity.island.Cell;
 import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 
@@ -35,14 +36,17 @@ public abstract class Animal extends Organism implements Moveable {
         return alive;
     }
 
-    public void die() {
+    public void die(Cell cell) {
         alive = false;
+        cell.decAnimal(this);
     }
 
-    public void depletion(){
+    public void depletion(Cell cell){
         double starvation = maxSaturation / 100.0;
         saturation -= starvation;
-        if (saturation < 0.0) die();
+        if (saturation < 0.0) {
+            die(cell);
+        }
     }
 
     public boolean decAction() {
