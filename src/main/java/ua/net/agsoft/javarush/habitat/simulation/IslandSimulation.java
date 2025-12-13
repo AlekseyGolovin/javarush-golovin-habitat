@@ -3,16 +3,19 @@ package ua.net.agsoft.javarush.habitat.simulation;
 import ua.net.agsoft.javarush.habitat.entity.island.Cell;
 import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.Animal;
-import ua.net.agsoft.javarush.habitat.entity.organism.animal.Moveable;
 import ua.net.agsoft.javarush.habitat.statistic.Statistic;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class IslandSimulation {
 
     public void simulate(Island island) {
         int beat = 0;
-        do{
+        do {
             // TODO: Истощение запасов еды
             if (beat % 10 == 0) depletion(island);
 
@@ -29,7 +32,7 @@ public class IslandSimulation {
             if (beat % 1 == 0) growPlants(island);
 
             beat++;
-        } while(beat < 1000);
+        } while (beat < 1000);
         showStatistic(island, beat);
     }
 
@@ -56,16 +59,60 @@ public class IslandSimulation {
     }
 
     private void makeChoice(Island island) {
-        ArrayList<Animal> animals = island.getAnimals();
-        for (Animal animal : animals) {
+        ThreadLocalRandom tlr = ThreadLocalRandom.current();
+        ArrayList<Animal> animals = new ArrayList<>();
+        //ArrayList<Animal> animals = island.getAnimals();
+
+
+        animals.addAll(island.getAnimals());
+
+        Iterator<Animal> it = animals.iterator();
+        while (it.hasNext()) {
+            Animal animal = it.next();
+            Class<? extends Animal> clazz = animal.getClass();
 
             if (!animal.isAlive()) continue;
 
+            //System.out.println(animal);
+
             while (animal.decAction()) {
+                int saturationPercent = animal.getSaturationPercent();
+                int chanceToEat = 100 - saturationPercent;
+                int chanceToReproduce = chanceToEat + saturationPercent / 2;
+
+                int chance = tlr.nextInt(100);
+
+                if (chance <= chanceToEat) {
+                    // Хочет кушать
+                    //System.out.println("Хочет кушать");
+
+                    if (animal.canEatPlants()) {
+                        // Пытаемся найти траву
+
+
+                    } else {
+                        // Пытаемся найти другое животное
+
+
+                    }
+                } else {
+                    if (chance <= chanceToReproduce) {
+
+                        //System.out.println("Хочет размножаться");
+
+                        if (!animal.reproduce(island)) {
+                            //System.out.println("Не может размножаться");
+                            animal.move(island);
+                        }
+                    } else {
+                        //System.out.println("Хочет ходить");
+                        animal.move(island);
+                    }
+                }
+
+
                 //100 - %насыщения = вероятность для кушать
                 // Оставшееся поделить пополам
-
-
 
 
                 // Сделать выбор
@@ -75,9 +122,7 @@ public class IslandSimulation {
                 // Размножение только если сытость Ю 50%
                 // Ненашли пару, ходить
 
-                if (animal != null && animal instanceof Moveable) {
-                    animal.move(island);
-                }
+
             }
         }
     }

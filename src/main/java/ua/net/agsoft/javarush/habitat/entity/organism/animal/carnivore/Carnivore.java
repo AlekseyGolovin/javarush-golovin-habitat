@@ -7,7 +7,7 @@ public abstract class Carnivore extends Animal {
     public Carnivore() {
     }
 
-    protected boolean canEatPlants(){
+    public boolean canEatPlants() {
         return false;
     }
 }

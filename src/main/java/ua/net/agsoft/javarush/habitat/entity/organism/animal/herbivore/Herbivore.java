@@ -6,7 +6,7 @@ public abstract class Herbivore extends Animal {
     public Herbivore() {
     }
 
-    protected boolean canEatPlants() {
+    public boolean canEatPlants() {
         return true;
     }
 }

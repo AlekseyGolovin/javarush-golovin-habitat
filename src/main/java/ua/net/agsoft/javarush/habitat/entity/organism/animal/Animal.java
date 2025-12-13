@@ -8,7 +8,7 @@ import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 import java.util.concurrent.ThreadLocalRandom;
 
 // implements Eatable, Moveable, Reproducible
-public abstract class Animal extends Organism implements Moveable {
+public abstract class Animal extends Organism implements Moveable, Eatable, Reproducible {
 
     protected boolean alive = true;
 
@@ -17,7 +17,6 @@ public abstract class Animal extends Organism implements Moveable {
 
     protected double maxSaturation;
     protected double saturation;
-
 
 
     protected int action;
@@ -30,7 +29,7 @@ public abstract class Animal extends Organism implements Moveable {
         }
     }
 
-    protected abstract boolean canEatPlants();
+    public abstract boolean canEatPlants();
 
     public boolean isAlive() {
         return alive;
@@ -41,7 +40,7 @@ public abstract class Animal extends Organism implements Moveable {
         cell.decAnimal(this);
     }
 
-    public void depletion(Cell cell){
+    public void depletion(Cell cell) {
         double starvation = maxSaturation / 100.0;
         saturation -= starvation;
         if (saturation < 0.0) {
@@ -55,6 +54,10 @@ public abstract class Animal extends Organism implements Moveable {
         return true;
     }
 
+    public boolean canAction() {
+        return action > 0;
+    }
+
     public void incAction() {
         action++;
     }
@@ -63,8 +66,16 @@ public abstract class Animal extends Organism implements Moveable {
         return positionX;
     }
 
+    public void setPositionX(int position) {
+        positionX = position;
+    }
+
     public int getPositionY() {
         return positionY;
+    }
+
+    public void setPositionY(int position) {
+        positionY = position;
     }
 
     public void setMaxSaturation(double maxSaturation) {
@@ -83,33 +94,16 @@ public abstract class Animal extends Organism implements Moveable {
         this.saturation = saturation;
     }
 
-
-    public void setPositionX(int position) {
-        positionX = position;
-    }
-
-    public void setPositionY(int position) {
-        positionY = position;
-    }
-
     @Override
     public void move(Island island) {
-        // Кол-во шагов
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
-        //System.out.println(this);
-
 
         Class<? extends Animal> clazz = this.getClass();
         OrganismConfiguration organismConfiguration = island.getorganismConfiguration();
         int maxSteps = organismConfiguration.getOrganismParameterMap().get(clazz).getMaxSteps();
 
-
-        //
-
         for (int step = 0; step < maxSteps; step++) {
             int direction = tlr.nextInt(4);
-            //System.out.println("X: "+positionX+" Y: "+positionY);
-            //System.out.println("step: "+step+" direction: "+direction);
             int newPositionX = positionX;
             int newPositionY = positionY;
             switch (direction) {
@@ -120,18 +114,48 @@ public abstract class Animal extends Organism implements Moveable {
                 default -> newPositionX++;
             }
 
-            //System.out.println("X: "+newPositionX+" Y: "+newPositionY);
-
             if (island.canMove(this, newPositionX, newPositionY)) {
                 island.getCell(positionX, positionY).decAnimal(this);
                 island.getCell(newPositionX, newPositionY).incAnimal(this);
                 positionX = newPositionX;
                 positionY = newPositionY;
-            } else {
-                //System.out.println("Can not move");
             }
         }
     }
 
 
+    public int getSaturationPercent() {
+
+        return (int) (100.0 * saturation / maxSaturation);
+
+
+    }
+
+    @Override
+    public boolean eat(Island island) {
+
+        return true;
+    }
+
+    @Override
+    public boolean reproduce(Island island) {
+        Animal pairAnimal = island.getPair(this);
+        if (pairAnimal == null) {
+            return false;
+        }
+        Class<? extends Animal> clazz = this.getClass();
+        Animal childAnimal = Animal.createInstance(clazz);
+        childAnimal.setWeight(weight);
+        childAnimal.setMaxSaturation(maxSaturation);
+        childAnimal.setSaturation(maxSaturation * 0.1);
+        childAnimal.setPositionX(positionX);
+        childAnimal.setPositionY(positionY);
+        Cell cell = island.getCell(positionX, positionY);
+        if (!cell.incAnimal(childAnimal)) {
+            throw new RuntimeException(clazz.getSimpleName() + " type overflow");
+        }
+        island.getAnimals().add(childAnimal);
+        pairAnimal.decAction();
+        return true;
+    }
 }

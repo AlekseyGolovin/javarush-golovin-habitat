@@ -97,13 +97,8 @@ public class Island {
     }
 
     private int getAnimalCountFromList(Class<? extends Animal> animalClazz) {
-
-        // Отфильтровать список по типу,
         List<Animal> animalList = animals.stream().filter(a -> a.getClass() == animalClazz).toList();
-
-        // просуммировать
         return animalList.size();
-
     }
 
     public int getWidth() {
@@ -122,20 +117,6 @@ public class Island {
         this.startPercentPopulation = startPercentPopulation;
     }
 
-    private void setOrganismConfiguration(OrganismConfiguration organismConfiguration) {
-        this.organismConfiguration = organismConfiguration;
-        Map<Class<? extends Organism>, Integer> maxOrganismMap = new HashMap<>();
-        for (AnimalType animalType : AnimalType.values()) {
-            Class<? extends Animal> animalClazz = animalType.getAnimalClass();
-            int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(animalClazz).getMaxCountPerCell();
-            maxOrganismMap.put(animalType.getAnimalClass(), maxCountPerCell);
-        }
-        int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(Plant.class).getMaxCountPerCell();
-        maxOrganismMap.put(Plant.class, maxCountPerCell);
-
-        Cell.setOrganismMaxCountMap(maxOrganismMap);
-    }
-
     public void populate(OrganismConfiguration organismConfiguration) {
         setOrganismConfiguration(organismConfiguration);
         for (int x = 0; x < width; x++) {
@@ -144,7 +125,6 @@ public class Island {
             }
         }
     }
-
 
     private void fillCell(int x, int y) {
         Cell cell = cells[x][y];
@@ -158,30 +138,32 @@ public class Island {
         cell.setPlantCount(plantCount);
 
         for (AnimalType animalType : AnimalType.values()) {
-            Class<? extends Animal> clazz = animalType.getAnimalClass();
+            fillAnimalInCell(x, y, animalType, tlr, cell);
+        }
+    }
 
-            int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(clazz).getMaxCountPerCell();
-            double foodRequired = organismConfiguration.getOrganismParameterMap().get(clazz).getFoodRequired();
-            double weight = organismConfiguration.getOrganismParameterMap().get(clazz).getWeight();
-            int animalCount = tlr.nextInt(maxCountPerCell * startPercentPopulation / 100);
-            for (int i = 0; i < animalCount; i++) {
-                // Создать животное
-                Animal animal = Animal.createInstance(animalType.getAnimalClass());
-                animal.setWeight(weight);
-                animal.setMaxSaturation(foodRequired);
-                animal.setSaturation(foodRequired / 2);
-                animal.setPositionX(x);
-                animal.setPositionY(y);
+    private void fillAnimalInCell(int x, int y, AnimalType animalType, ThreadLocalRandom tlr, Cell cell) {
 
-                // Привязать к ячейке
-                if (!cell.incAnimal(animal)) {
-                    throw new RuntimeException(clazz.getSimpleName() + " type overflow when creating an island");
-                }
+        Class<? extends Animal> clazz = animalType.getAnimalClass();
 
-                animals.add(animal);
+        int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(clazz).getMaxCountPerCell();
+        double foodRequired = organismConfiguration.getOrganismParameterMap().get(clazz).getFoodRequired();
+        double weight = organismConfiguration.getOrganismParameterMap().get(clazz).getWeight();
+        int animalCount = tlr.nextInt(maxCountPerCell * startPercentPopulation / 100);
+        for (int i = 0; i < animalCount; i++) {
 
+            Animal animal = Animal.createInstance(animalType.getAnimalClass());
+            animal.setWeight(weight);
+            animal.setMaxSaturation(foodRequired);
+            animal.setSaturation(foodRequired / 2);
+            animal.setPositionX(x);
+            animal.setPositionY(y);
 
+            if (!cell.incAnimal(animal)) {
+                throw new RuntimeException(clazz.getSimpleName() + " type overflow when creating an island");
             }
+
+            animals.add(animal);
         }
     }
 
@@ -217,5 +199,43 @@ public class Island {
                 cell.growPlants();
             }
         }
+    }
+
+    public OrganismConfiguration getOrganismConfiguration() {
+        return organismConfiguration;
+    }
+
+    private void setOrganismConfiguration(OrganismConfiguration organismConfiguration) {
+        this.organismConfiguration = organismConfiguration;
+        Map<Class<? extends Organism>, Integer> maxOrganismMap = new HashMap<>();
+        for (AnimalType animalType : AnimalType.values()) {
+            Class<? extends Animal> animalClazz = animalType.getAnimalClass();
+            int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(animalClazz).getMaxCountPerCell();
+            maxOrganismMap.put(animalType.getAnimalClass(), maxCountPerCell);
+        }
+        int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(Plant.class).getMaxCountPerCell();
+        maxOrganismMap.put(Plant.class, maxCountPerCell);
+
+        Cell.setOrganismMaxCountMap(maxOrganismMap);
+    }
+
+    public Animal getPair(Animal animal) {
+        int x = animal.getPositionX();
+        int y = animal.getPositionY();
+        Cell cell = getCell(x, y);
+        if (!cell.canAddAnimal(animal)) {
+            return null;
+        }
+        Class<? extends Animal> animalClazz = animal.getClass();
+        List<Animal> pairList = animals.stream()
+                .filter(a -> a.getClass() == animalClazz)
+                .filter(a -> a.getPositionX() == x)
+                .filter(a -> a.getPositionY() == y)
+                .filter(Animal::isAlive)
+                .filter(Animal::canAction).toList();
+        if (pairList.isEmpty()) {
+            return null;
+        }
+        return pairList.getFirst();
     }
 }

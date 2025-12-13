@@ -24,30 +24,27 @@ public class Statistic {
     }
 
     public static void showInConsole(Island island, int beat){
-        String delimeter = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+        String delimeter = "-----------------------------------------------------------------" +
+                "----------------------------------------------------------------------------" +
+                "--------------------------------------------------------------------";
         //clearScreen();
 
         String summary = "beat "+String.format("%7d", beat) +"     |     " +
                 "animals: "+String.format("%7d", island.getAnimalCount()) +"     |     " +
                 "plants:"+String.format("%7d", island.getPlantCount());
-        String animalSummaryHeader = "";
+
+        StringBuilder animalSummaryHeader = new StringBuilder();
         for (AnimalType animalType : AnimalType.values()) {
             Class<? extends Animal> animalClazz = animalType.getAnimalClass();
-            //int islandCount = getAnimalCountFromList(animalClazz);
-            //int cellsCount = getAnimalCountFromCells(animalClazz);
             String className = animalClazz.getSimpleName();
-            //String animalStatistic = className + ": [" + islandCount + "][" + cellsCount + "]\n";
-            animalSummaryHeader += String.format("%-11s", className) +" | ";
+            animalSummaryHeader.append(String.format("%-11s", className)).append(" | ");
         }
 
-        String animalSummaryInfo = "";
+        StringBuilder animalSummaryInfo = new StringBuilder();
         for (AnimalType animalType : AnimalType.values()) {
             Class<? extends Animal> animalClazz = animalType.getAnimalClass();
             int count = island.getAnimalCount(animalClazz);
-            //int cellsCount = getAnimalCountFromCells(animalClazz);
-            //String className = animalClazz.getSimpleName();
-            //String animalStatistic = className + ": [" + islandCount + "][" + cellsCount + "]\n";
-            animalSummaryInfo += String.format("%-11d", count) +" | ";
+            animalSummaryInfo.append(String.format("%-11d", count)).append(" | ");
         }
 
         System.out.println(delimeter);
