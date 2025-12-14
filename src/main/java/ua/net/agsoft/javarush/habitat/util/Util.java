@@ -3,9 +3,10 @@ package ua.net.agsoft.javarush.habitat.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Util {
     // Let's get rid of the Java or JAR file binding
@@ -21,7 +22,6 @@ public class Util {
             return path;
         }
     }
-
 
 
     public static Path getLocation(Class<?> clazz) throws URISyntaxException {
@@ -52,6 +52,15 @@ public class Util {
     public static boolean isXml(Path path) {
         // Часто используются расширения xml, xsd, xsl, xhtml, но .xml самое общее
         return "xml".equals(getFileExtension(path));
+    }
+
+    public static <T> T getRandom(List<T> list) {
+        ThreadLocalRandom tlr = ThreadLocalRandom.current();
+        if (list.isEmpty()) return null;
+        int size = list.size();
+        int index = tlr.nextInt(size);
+        return list.get(index);
+
     }
 
 

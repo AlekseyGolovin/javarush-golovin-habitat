@@ -5,15 +5,17 @@ import ua.net.agsoft.javarush.habitat.entity.organism.Organism;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.Animal;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.AnimalType;
 import ua.net.agsoft.javarush.habitat.entity.organism.plant.Plant;
+import ua.net.agsoft.javarush.habitat.util.Util;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Island {
 
-
     private static volatile Island instance;
-
+    private final StringBuilder randomAnimalActions = new StringBuilder();
+    private Class<? extends Animal> randomAnimalClass;
+    private Animal randomAnimal;
     private int startPercentPopulation = 50;
     private OrganismConfiguration organismConfiguration;
 
@@ -42,26 +44,29 @@ public class Island {
         return instance;
     }
 
-    @Override
-    public String toString() {
-        // TODO: для теста показать кол-во волков на основе списка.
-        //  Показать кол-во волков суммированием кол-ва по ячейкам
-        String animalsStatistic = "";
-        for (AnimalType animalType : AnimalType.values()) {
-            Class<? extends Animal> animalClazz = animalType.getAnimalClass();
-            int islandCount = getAnimalCountFromList(animalClazz);
-            int cellsCount = getAnimalCountFromCells(animalClazz);
-            String className = animalClazz.getSimpleName();
-            String animalStatistic = className + ": [" + islandCount + "][" + cellsCount + "]\n";
-            animalsStatistic += animalStatistic;
+    public void selectRandomAnimal() {
+        List<Animal> animalList;
+        if (randomAnimalClass != null) {
+            animalList = animals.stream()
+                    .filter(a -> a.getClass() == randomAnimalClass)
+                    .filter(Animal::isAlive)
+                    .toList();
+        } else {
+            animalList = animals;
         }
-        String answer = "Island:\n" +
-                "width=" + width + " height=" + height + " \n" +
-                "animals: " + animals.size() + "\n" +
-                animalsStatistic;
 
+        randomAnimal = Util.getRandom(animalList);
+        if (randomAnimalClass == null && randomAnimal != null) {
+            randomAnimalClass = randomAnimal.getClass();
+        }
+    }
 
-        return answer;
+    public void addRandomAnimalAction(String action) {
+        randomAnimalActions.append(action);
+    }
+
+    public String getRandomAnimalActions() {
+        return randomAnimalActions.toString();
     }
 
     private int getAnimalCountFromCells(Class<? extends Animal> animalClazz) {
@@ -85,15 +90,15 @@ public class Island {
     }
 
     public int getPlantCount() {
-        int sum = 0;
+        double sum = 0.0;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Cell cell = getCell(x, y);
-                int count = cell.getPlantCount();
+                double count = cell.getPlantCount();
                 sum += count;
             }
         }
-        return sum;
+        return (int) sum;
     }
 
     private int getAnimalCountFromList(Class<? extends Animal> animalClazz) {
@@ -119,21 +124,24 @@ public class Island {
 
     public void populate(OrganismConfiguration organismConfiguration) {
         setOrganismConfiguration(organismConfiguration);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                fillCell(x, y);
-            }
-        }
-    }
-
-    private void fillCell(int x, int y) {
-        Cell cell = cells[x][y];
 
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                fillCell(tlr, x, y);
+            }
+        }
+
+
+    }
+
+    private void fillCell(ThreadLocalRandom tlr, int x, int y) {
+        Cell cell = cells[x][y];
+
         int maxPlantCountPerCell = organismConfiguration.getOrganismParameterMap().get(Plant.class).getMaxCountPerCell();
         System.out.println("maxPlantCountPerCell: " + maxPlantCountPerCell);
-        int plantCount = tlr.nextInt(maxPlantCountPerCell * startPercentPopulation / 100);
+        int plantCount = maxPlantCountPerCell / 2 + tlr.nextInt(maxPlantCountPerCell / 2);
         System.out.println("plantCount: " + plantCount);
         cell.setPlantCount(plantCount);
 
@@ -147,9 +155,19 @@ public class Island {
         Class<? extends Animal> clazz = animalType.getAnimalClass();
 
         int maxCountPerCell = organismConfiguration.getOrganismParameterMap().get(clazz).getMaxCountPerCell();
+
+        //System.out.println(clazz.getSimpleName() + " maxCountPerCel: " + maxCountPerCell);
+
         double foodRequired = organismConfiguration.getOrganismParameterMap().get(clazz).getFoodRequired();
         double weight = organismConfiguration.getOrganismParameterMap().get(clazz).getWeight();
-        int animalCount = tlr.nextInt(maxCountPerCell * startPercentPopulation / 100);
+        int bound = maxCountPerCell * 10 / 100;
+        if (bound < 1) {
+            bound = 1;
+        }
+        int animalCount = (maxCountPerCell * (startPercentPopulation - 10) / 100) + (tlr.nextInt(bound));
+        if (animalCount > maxCountPerCell) {
+            animalCount = maxCountPerCell;
+        }
         for (int i = 0; i < animalCount; i++) {
 
             Animal animal = Animal.createInstance(animalType.getAnimalClass());
@@ -165,10 +183,6 @@ public class Island {
 
             animals.add(animal);
         }
-    }
-
-    public OrganismConfiguration getorganismConfiguration() {
-        return organismConfiguration;
     }
 
     public boolean canMove(Animal animal, int x, int y) {
@@ -232,10 +246,61 @@ public class Island {
                 .filter(a -> a.getPositionX() == x)
                 .filter(a -> a.getPositionY() == y)
                 .filter(Animal::isAlive)
-                .filter(Animal::canAction).toList();
+                .filter(Animal::canAction)
+                .toList();
         if (pairList.isEmpty()) {
             return null;
         }
         return pairList.getFirst();
+    }
+
+    public Animal getFood(Animal animal) {
+        Class<? extends Animal> animalClazz = animal.getClass();
+
+        Set<Class<? extends Animal>> foodClassSet = new HashSet<>();
+        for (AnimalType animalType : AnimalType.values()) {
+            Class<? extends Animal> foodClazz = animalType.getAnimalClass();
+            int eatChance = organismConfiguration.getEatenProbabilitiesMap().get(animalClazz).get(foodClazz);
+            if (eatChance > 0) {
+                foodClassSet.add(foodClazz);
+            }
+        }
+        if (foodClassSet.isEmpty()) {
+            return null;
+        }
+
+        int x = animal.getPositionX();
+        int y = animal.getPositionY();
+
+        List<Animal> foodList = animals.stream()
+                .filter(a -> a.getClass() != animalClazz)
+                .filter(a -> a.getPositionX() == x)
+                .filter(a -> a.getPositionY() == y)
+                .filter(Animal::isAlive)
+                .filter(a -> foodClassSet.contains(a.getClass()))
+                .sorted(Comparator.comparingDouble(Animal::getWeight).reversed())
+                .toList();
+        return Util.getRandom(foodList);
+
+//        if (foodList.isEmpty()) {
+//            return null;
+//        }
+//        return foodList.getFirst();
+    }
+
+    public Class<? extends Animal> getRandomAnimalClass() {
+        return randomAnimalClass;
+    }
+
+    public void setRandomAnimalClass(Class<? extends Animal> randomAnimalClass) {
+        this.randomAnimalClass = randomAnimalClass;
+    }
+
+    public Animal getRandomAnimal() {
+        return randomAnimal;
+    }
+
+    public void clearRandomAnimalAction() {
+        randomAnimalActions.setLength(0);
     }
 }

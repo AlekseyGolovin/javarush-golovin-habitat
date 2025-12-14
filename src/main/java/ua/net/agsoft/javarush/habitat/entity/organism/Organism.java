@@ -1,17 +1,16 @@
 package ua.net.agsoft.javarush.habitat.entity.organism;
 
 import ua.net.agsoft.javarush.habitat.config.OrganismConfiguration;
+
 // implements Edible
-public abstract class Organism{
+public abstract class Organism {
 
     //private OrganismParameter organismParameter;
-
 
 
     protected double weight;
 
     //private int maxCountPerCell;
-
 
 
     public Organism() {
@@ -22,10 +21,13 @@ public abstract class Organism{
         //this.organismParameter =
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
     public void setWeight(double weight) {
         this.weight = weight;
     }
-
 
 
 }

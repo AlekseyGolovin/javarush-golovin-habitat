@@ -2,6 +2,8 @@ package ua.net.agsoft.javarush.habitat;
 
 import ua.net.agsoft.javarush.habitat.config.Configurator;
 import ua.net.agsoft.javarush.habitat.entity.island.Island;
+import ua.net.agsoft.javarush.habitat.entity.organism.animal.carnivore.*;
+import ua.net.agsoft.javarush.habitat.entity.organism.animal.herbivore.*;
 import ua.net.agsoft.javarush.habitat.simulation.IslandSimulation;
 import ua.net.agsoft.javarush.habitat.util.Util;
 
@@ -19,7 +21,7 @@ public class Main {
             Island island = configurator.prepareWorld();
 
             IslandSimulation islandSimulation = new IslandSimulation();
-            islandSimulation.simulate(island);
+            islandSimulation.simulate(island, Horse.class, true);
 
         } catch (Exception e) {
             e.printStackTrace();

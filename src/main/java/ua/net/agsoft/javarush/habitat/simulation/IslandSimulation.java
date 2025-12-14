@@ -1,52 +1,79 @@
 package ua.net.agsoft.javarush.habitat.simulation;
 
-import ua.net.agsoft.javarush.habitat.entity.island.Cell;
 import ua.net.agsoft.javarush.habitat.entity.island.Island;
 import ua.net.agsoft.javarush.habitat.entity.organism.animal.Animal;
+import ua.net.agsoft.javarush.habitat.statistic.ConsoleStatistic;
 import ua.net.agsoft.javarush.habitat.statistic.Statistic;
+import ua.net.agsoft.javarush.habitat.util.Util;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IslandSimulation {
 
-    public void simulate(Island island) {
+    private Island island;
+    private Animal randomAnimal;
+
+
+    public void simulate(Island island, Class monitoredClass, boolean showAnimal) {
+
+        this.island = island;
+        island.setRandomAnimalClass(monitoredClass);
+        island.selectRandomAnimal();
+        randomAnimal = island.getRandomAnimal();
+
+        Statistic statistic = new ConsoleStatistic();
+        statistic.setIsland(this.island);
+        statistic.setShowAnimal(showAnimal);
+
         int beat = 0;
+        statistic.show(0);
         do {
-            // TODO: Истощение запасов еды
-            if (beat % 10 == 0) depletion(island);
+            // TODO: Поток роста ростительности
+            growPlants();
 
-            // TODO: Довить всем животным по одному действию
-            if (beat % 1 == 0) incAction(island);
-
-            // TODO: Сбор статистики. отдельным потоком.
-            if (beat % 100 == 0) showStatistic(island, beat);
+            // TODO: Добавить всем животным по одному действию
+            incAction();
 
             // TODO: Симуляция действий. Отдельным потоком
-            if (beat % 1 == 0) makeChoice(island);
+            island.clearRandomAnimalAction();
+            makeChoice();
 
-            // TODO: Поток роста ростительности
-            if (beat % 1 == 0) growPlants(island);
+            // TODO: Истощение запасов еды
+            depletion();
+
+            // TODO: Сбор статистики. отдельным потоком.
+            statistic.show(beat + 1);
+
+            if (randomAnimal == null || !randomAnimal.isAlive()) {
+                island.selectRandomAnimal();
+                randomAnimal = island.getRandomAnimal();
+                statistic.updateRandomAnimal();
+            }
 
             beat++;
-        } while (beat < 1000);
-        showStatistic(island, beat);
+        } while (randomAnimal != null && beat < 200);
+
+        statistic.showExtinction();
     }
 
-    private void depletion(Island island) {
+    private void growPlants() {
+        island.growPlants();
+    }
+
+    private void depletion() {
         ArrayList<Animal> animals = island.getAnimals();
         for (Animal animal : animals) {
             if (!animal.isAlive()) continue;
-            Cell cell = island.getCell(animal.getPositionX(), animal.getPositionY());
-            animal.depletion(cell);
+            animal.depletion(island);
         }
         animals.removeIf(animal -> !animal.isAlive());
     }
 
-    private void incAction(Island island) {
+    private void incAction() {
         ArrayList<Animal> animals = island.getAnimals();
         for (Animal animal : animals) {
             if (!animal.isAlive()) continue;
@@ -54,80 +81,63 @@ public class IslandSimulation {
         }
     }
 
-    private void showStatistic(Island island, int beat) {
-        Statistic.showInConsole(island, beat);
-    }
-
-    private void makeChoice(Island island) {
-        ThreadLocalRandom tlr = ThreadLocalRandom.current();
-        ArrayList<Animal> animals = new ArrayList<>();
-        //ArrayList<Animal> animals = island.getAnimals();
-
-
-        animals.addAll(island.getAnimals());
-
-        Iterator<Animal> it = animals.iterator();
-        while (it.hasNext()) {
-            Animal animal = it.next();
-            Class<? extends Animal> clazz = animal.getClass();
-
+    private void makeChoice() {
+        ArrayList<Animal> animals = new ArrayList<>(island.getAnimals());
+        for (Animal animal : animals) {
             if (!animal.isAlive()) continue;
-
-            //System.out.println(animal);
-
-            while (animal.decAction()) {
-                int saturationPercent = animal.getSaturationPercent();
-                int chanceToEat = 100 - saturationPercent;
-                int chanceToReproduce = chanceToEat + saturationPercent / 2;
-
-                int chance = tlr.nextInt(100);
-
-                if (chance <= chanceToEat) {
-                    // Хочет кушать
-                    //System.out.println("Хочет кушать");
-
-                    if (animal.canEatPlants()) {
-                        // Пытаемся найти траву
-
-
-                    } else {
-                        // Пытаемся найти другое животное
-
-
-                    }
-                } else {
-                    if (chance <= chanceToReproduce) {
-
-                        //System.out.println("Хочет размножаться");
-
-                        if (!animal.reproduce(island)) {
-                            //System.out.println("Не может размножаться");
-                            animal.move(island);
-                        }
-                    } else {
-                        //System.out.println("Хочет ходить");
-                        animal.move(island);
-                    }
-                }
-
-
-                //100 - %насыщения = вероятность для кушать
-                // Оставшееся поделить пополам
-
-
-                // Сделать выбор
-                // Если сытость < 50% есть
-                // Если не нашли еду, ходить
-
-                // Размножение только если сытость Ю 50%
-                // Ненашли пару, ходить
-
-
-            }
+            makeChoiceForAnimal(animal);
         }
     }
 
-    private void growPlants(Island island) {
-        island.growPlants();
+    private void makeChoiceForAnimal(Animal animal) {
+        ThreadLocalRandom tlr = ThreadLocalRandom.current();
+        while (animal.decAction()) {
+
+            boolean isSelected = randomAnimal != null && animal == randomAnimal;
+
+            int saturationPercent = animal.getSaturationPercent();
+            int chanceToEat = 100 - saturationPercent;
+
+            int chanceToReproduce = chanceToEat + saturationPercent / 10;
+            int maxSteps = island.getOrganismConfiguration().getOrganismParameterMap()
+                    .get(animal.getClass()).getMaxSteps();
+            if (maxSteps == 0) {
+                chanceToReproduce = 100;
+            }
+
+            int chance = tlr.nextInt(100);
+
+            if (chance <= chanceToEat) {
+                //System.out.println("Хочет есть");
+
+                if (isSelected) {
+                    island.addRandomAnimalAction("I wanted to eat. ");
+                }
+
+                if (!animal.eat(island)) {
+                    if (isSelected) {
+                        island.addRandomAnimalAction("But there is no food here. ");
+                    }
+                    animal.move(island);
+                }
+            } else {
+                if (chance <= chanceToReproduce) {
+                    if (isSelected) {
+                        island.addRandomAnimalAction("I wanted to reproduce. ");
+                    }
+                    if (!animal.reproduce(island)) {
+                        if (isSelected) {
+                            island.addRandomAnimalAction("But there are no animals of my kind here. ");
+                        }
+                        animal.move(island);
+                    }
+                } else {
+                    if (isSelected) {
+                        island.addRandomAnimalAction("I wanted to walk. ");
+                    }
+                    animal.move(island);
+                }
+            }
+        }
     }
 }
