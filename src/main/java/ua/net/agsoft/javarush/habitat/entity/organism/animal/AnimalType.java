@@ -18,7 +18,7 @@ public enum AnimalType {
     BOAR(Boar.class),
     BUFFALO(Buffalo.class),
     DUCK(Duck.class),
-    CATERPILLAR(Caterpillar.class);
+    CATERPILLAR(Worm.class);
 
     private final Class<? extends Animal> animalClass;
 

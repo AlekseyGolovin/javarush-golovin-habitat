@@ -1,0 +1,406 @@
+{
+  "Island": {
+    "Width": 100,
+    "Height": 20
+  },
+  "Organism": {
+    "Wolf": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 10,
+        "Deer": 15,
+        "Rabbit": 60,
+        "Mouse": 80,
+        "Goat": 60,
+        "Sheep": 70,
+        "Boar": 15,
+        "Buffalo": 10,
+        "Duck": 40,
+        "Worm": 0,
+        "Plant": 0
+      },
+      "Parameters": {
+        "Weight": 50,
+        "MaxCountPerCell": 30,
+        "MaxSteps": 3,
+        "FoodRequired": 8
+      }
+    },
+    "Boa": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 15,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 20,
+        "Mouse": 40,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 10,
+        "Worm": 0,
+        "Plant": 0
+      },
+      "Parameters": {
+        "Weight": 15,
+        "MaxCountPerCell": 30,
+        "MaxSteps": 1,
+        "FoodRequired": 3
+      }
+    },
+    "Fox": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 70,
+        "Mouse": 90,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 60,
+        "Worm": 40,
+        "Plant": 0
+      },
+      "Parameters": {
+        "Weight": 8,
+        "MaxCountPerCell": 30,
+        "MaxSteps": 2,
+        "FoodRequired": 2
+      }
+    },
+    "Bear": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 80,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 40,
+        "Deer": 80,
+        "Rabbit": 80,
+        "Mouse": 90,
+        "Goat": 70,
+        "Sheep": 70,
+        "Boar": 50,
+        "Buffalo": 20,
+        "Duck": 10,
+        "Worm": 0,
+        "Plant": 0
+      },
+      "Parameters": {
+        "Weight": 500,
+        "MaxCountPerCell": 5,
+        "MaxSteps": 2,
+        "FoodRequired": 80
+      }
+    },
+    "Eagle": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 10,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 90,
+        "Mouse": 90,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 80,
+        "Worm": 0,
+        "Plant": 0
+      },
+      "Parameters": {
+        "Weight": 6,
+        "MaxCountPerCell": 20,
+        "MaxSteps": 3,
+        "FoodRequired": 1
+      }
+    },
+    "Horse": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 400,
+        "MaxCountPerCell": 20,
+        "MaxSteps": 4,
+        "FoodRequired": 60
+      }
+    },
+    "Deer": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 300,
+        "MaxCountPerCell": 20,
+        "MaxSteps": 4,
+        "FoodRequired": 50
+      }
+    },
+    "Rabbit": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 2,
+        "MaxCountPerCell": 150,
+        "MaxSteps": 2,
+        "FoodRequired": 0.45
+      }
+    },
+    "Mouse": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 90,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 0.05,
+        "MaxCountPerCell": 500,
+        "MaxSteps": 1,
+        "FoodRequired": 0.01
+      }
+    },
+    "Goat": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 60,
+        "MaxCountPerCell": 140,
+        "MaxSteps": 3,
+        "FoodRequired": 10
+      }
+    },
+    "Sheep": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 70,
+        "MaxCountPerCell": 140,
+        "MaxSteps": 3,
+        "FoodRequired": 15
+      }
+    },
+    "Boar": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 50,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 90,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 400,
+        "MaxCountPerCell": 50,
+        "MaxSteps": 2,
+        "FoodRequired": 50
+      }
+    },
+    "Buffalo": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 700,
+        "MaxCountPerCell": 10,
+        "MaxSteps": 3,
+        "FoodRequired": 100
+      }
+    },
+    "Duck": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 90,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 1,
+        "MaxCountPerCell": 200,
+        "MaxSteps": 4,
+        "FoodRequired": 0.15
+      }
+    },
+    "Worm": {
+      "EatenProbabilities": {
+        "Wolf": 0,
+        "Boa": 0,
+        "Fox": 0,
+        "Bear": 0,
+        "Eagle": 0,
+        "Horse": 0,
+        "Deer": 0,
+        "Rabbit": 0,
+        "Mouse": 0,
+        "Goat": 0,
+        "Sheep": 0,
+        "Boar": 0,
+        "Buffalo": 0,
+        "Duck": 0,
+        "Worm": 0,
+        "Plant": 100
+      },
+      "Parameters": {
+        "Weight": 0.01,
+        "MaxCountPerCell": 1000,
+        "MaxSteps": 0,
+        "FoodRequired": 0
+      }
+    },
+    "Plant": {
+      "Parameters": {
+        "Weight": 1,
+        "MaxCountPerCell": 200,
+        "MaxSteps": 0,
+        "FoodRequired": 0
+      }
+    }
+  }
+}

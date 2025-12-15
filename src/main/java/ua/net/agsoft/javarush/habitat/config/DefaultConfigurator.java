@@ -43,7 +43,7 @@ public class DefaultConfigurator {
         organismParameterMap.put(Boar.class, new OrganismParameter(400, 50, 2, 50));
         organismParameterMap.put(Buffalo.class, new OrganismParameter(700, 10, 3, 100));
         organismParameterMap.put(Duck.class, new OrganismParameter(1, 200, 4, 0.15));
-        organismParameterMap.put(Caterpillar.class, new OrganismParameter(0.01, 1000, 0, 0));
+        organismParameterMap.put(Worm.class, new OrganismParameter(0.01, 1000, 0, 0));
         organismParameterMap.put(Plant.class, new OrganismParameter(1, 200, 0, 0));
     }
 
@@ -81,7 +81,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 15);
         itemEatenProbabilitiesMap.put(Buffalo.class, 10);
         itemEatenProbabilitiesMap.put(Duck.class, 40);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 0);
         eatenProbabilitiesMap.put(Wolf.class, itemEatenProbabilitiesMap);
     }
@@ -102,7 +102,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 10);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 0);
         eatenProbabilitiesMap.put(Boa.class, itemEatenProbabilitiesMap);
     }
@@ -123,7 +123,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 60);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 40);
+        itemEatenProbabilitiesMap.put(Worm.class, 40);
         itemEatenProbabilitiesMap.put(Plant.class, 0);
         eatenProbabilitiesMap.put(Fox.class, itemEatenProbabilitiesMap);
     }
@@ -144,7 +144,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 50);
         itemEatenProbabilitiesMap.put(Buffalo.class, 20);
         itemEatenProbabilitiesMap.put(Duck.class, 10);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 0);
         eatenProbabilitiesMap.put(Bear.class, itemEatenProbabilitiesMap);
     }
@@ -165,7 +165,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 80);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 0);
         eatenProbabilitiesMap.put(Eagle.class, itemEatenProbabilitiesMap);
     }
@@ -186,7 +186,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Horse.class, itemEatenProbabilitiesMap);
     }
@@ -207,7 +207,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Deer.class, itemEatenProbabilitiesMap);
     }
@@ -228,7 +228,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Rabbit.class, itemEatenProbabilitiesMap);
     }
@@ -249,7 +249,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 90);
+        itemEatenProbabilitiesMap.put(Worm.class, 90);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Mouse.class, itemEatenProbabilitiesMap);
     }
@@ -270,7 +270,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Goat.class, itemEatenProbabilitiesMap);
     }
@@ -291,7 +291,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Sheep.class, itemEatenProbabilitiesMap);
     }
@@ -312,7 +312,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 90);
+        itemEatenProbabilitiesMap.put(Worm.class, 90);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Boar.class, itemEatenProbabilitiesMap);
     }
@@ -333,7 +333,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Buffalo.class, itemEatenProbabilitiesMap);
     }
@@ -354,7 +354,7 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 90);
+        itemEatenProbabilitiesMap.put(Worm.class, 90);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
         eatenProbabilitiesMap.put(Duck.class, itemEatenProbabilitiesMap);
     }
@@ -375,8 +375,8 @@ public class DefaultConfigurator {
         itemEatenProbabilitiesMap.put(Boar.class, 0);
         itemEatenProbabilitiesMap.put(Buffalo.class, 0);
         itemEatenProbabilitiesMap.put(Duck.class, 0);
-        itemEatenProbabilitiesMap.put(Caterpillar.class, 0);
+        itemEatenProbabilitiesMap.put(Worm.class, 0);
         itemEatenProbabilitiesMap.put(Plant.class, 100);
-        eatenProbabilitiesMap.put(Caterpillar.class, itemEatenProbabilitiesMap);
+        eatenProbabilitiesMap.put(Worm.class, itemEatenProbabilitiesMap);
     }
 }
