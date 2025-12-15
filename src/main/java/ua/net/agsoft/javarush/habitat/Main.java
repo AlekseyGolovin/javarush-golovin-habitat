@@ -21,7 +21,7 @@ public class Main {
             Island island = configurator.prepareWorld();
 
             IslandSimulation islandSimulation = new IslandSimulation();
-            islandSimulation.simulate(island, Horse.class, true);
+            islandSimulation.simulate(island, Rabbit.class, true);
 
         } catch (Exception e) {
             e.printStackTrace();
